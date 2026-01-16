@@ -12,7 +12,10 @@
   },
   "dependencies": {
     "@mantine/core": "^8.3.12",
+    "@mantine/dates": "^8.3.12",
+    "@mantine/form": "^8.3.12",
     "@mantine/hooks": "^8.3.12",
+    "@mantine/notifications": "^8.3.12",
     "@tabler/icons-react": "^3.36.1",
     "@tanstack/react-router": "^1.150.0",
     "@tanstack/react-router-devtools": "^1.150.0",
