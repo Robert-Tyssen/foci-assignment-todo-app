@@ -1,5 +1,4 @@
 import { MantineProvider } from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { RouterProvider } from "@tanstack/react-router";
 import { DependenciesProvider } from "./di/DependenciesProvider";
@@ -14,10 +13,8 @@ const App = () => {
     <>
       <DependenciesProvider>
         <MantineProvider>
-          <ModalsProvider>
             <Notifications />
             <RouterProvider router={router} />
-          </ModalsProvider>
         </MantineProvider>
       </DependenciesProvider>
     </>
