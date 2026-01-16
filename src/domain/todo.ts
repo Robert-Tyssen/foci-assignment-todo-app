@@ -29,3 +29,29 @@ export const isOverdue = (t: Todo, now = new Date()): boolean => {
   // Otherwise compare due date against current time
   return t.dueDate < now;
 };
+
+/**
+ * Function which determines if the to-do item is due today. An item is considered
+ * 'due today' if it is not already completed, and has a due date equal to today.
+ *
+ * @param t the Todo item being evaluated
+ * @param today the value to use as 'today' for the comparison. Defaults to the current date.
+ * @returns true if the Todo is due today.
+ */
+export const isDueToday = (t: Todo, today = new Date()): boolean => {
+  // Can only be due today if not yet completed, and a due date is set
+  if (!t.isCompleted && t.dueDate) {
+    // Create copies to avoid mutating original values
+    const d1 = new Date(t.dueDate);
+    const d2 = new Date(today);
+
+    // Remove time component, so that we're only looking at the date
+    d1.setHours(0, 0, 0, 0);
+    d2.setHours(0, 0, 0, 0);
+
+    // Compare the timestamps - should be date-only comparison now
+    return d1.getTime() === d2.getTime();
+  }
+
+  return false;
+};
