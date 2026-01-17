@@ -1,18 +1,19 @@
-import {
-  Container,
-  Stack,
-  Switch,
-  Text,
-  Title
-} from "@mantine/core";
+import { Container, Stack, Switch, Text, Title } from "@mantine/core";
 import { useState } from "react";
 import CreateTodoButton from "../components/CreateTodoButton";
 import TodoListTile from "../components/TodoListTile";
 import { useTodoList } from "../hooks/useTodoList";
+import { useNavigate } from "@tanstack/react-router";
+import type { Todo } from "../../domain/todo";
 
 const TodosPage = () => {
   const [showCompleted, setShowCompleted] = useState(true);
   const { data: todos, error, isLoading } = useTodoList();
+  const navigate = useNavigate();
+
+  const onTodoSelected = (todo: Todo) => {
+    navigate({ to: "/todos/$todoId", params: { todoId: todo.id } });
+  };
 
   return (
     <Container>
@@ -34,7 +35,7 @@ const TodosPage = () => {
         <>
           <Stack>
             {todos.map((t) => (
-              <TodoListTile t={t} />
+              <TodoListTile t={t} onClick={() => onTodoSelected(t)} />
             ))}
           </Stack>
         </>

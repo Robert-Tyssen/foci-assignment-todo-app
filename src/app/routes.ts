@@ -1,5 +1,11 @@
-import { createRootRoute, createRoute, createRouter, redirect } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  redirect,
+} from "@tanstack/react-router";
 import TodosPage from "../ui/pages/TodosPage";
+import TodoDetailPage from "../ui/pages/TodoDetailPage";
 
 // Root route which wraps all other routes
 const rootRoute = createRootRoute();
@@ -21,17 +27,29 @@ const indexRoot = createRoute({
 const todosRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/todos",
-  component: TodosPage
+  component: TodosPage,
 });
 
+// To-Do detail route
+const todoDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/todos/$todoId",
+  component: TodoDetailPage,
+});
 
 // Compose routes into route tree, and build the router
-const routeTree = rootRoute.addChildren([indexRoot, todosRoute]);
+
+const routeTree = rootRoute.addChildren([
+  indexRoot,
+  todosRoute,
+  todoDetailRoute,
+]);
+
 export const router = createRouter({ routeTree });
 
 // Add this so that any routing within the app logic is type-safe
 // (e.g. syntax error if route doesn't exist)
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
   }

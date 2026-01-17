@@ -13,7 +13,15 @@ import DueDateBadge from "./DueDateBadge";
 
 import classes from "./ClickablePaper.module.css";
 
-const TodoListTile = ({ t }: { t: Todo }) => {
+interface TodoListTileProps {
+  t: Todo;
+  onClick?: () => void;
+}
+
+const TodoListTile = ({ t, onClick }: TodoListTileProps) => {
+  const handleContainerClicked = () => {
+    onClick?.();
+  };
   const handleCheckboxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     console.log("Checkbox clicked");
@@ -32,7 +40,7 @@ const TodoListTile = ({ t }: { t: Todo }) => {
       py="xs"
       radius="lg"
       className={classes.clickablePaper}
-      onClick={() => console.log("Clicked!")}
+      onClick={handleContainerClicked}
     >
       <Group align="start" justify="start" display="flex">
         <Checkbox radius="xl" pt={4} onClick={handleCheckboxClick} />
