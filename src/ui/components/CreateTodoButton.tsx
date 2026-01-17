@@ -11,6 +11,7 @@ import { hasLength, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconPlus } from "@tabler/icons-react";
+import { useCreateTodo } from "../hooks/useCreateTodo";
 
 /**
  * Form properties for to-do creation.
@@ -35,6 +36,8 @@ const descriptionMaxLength = 500;
 const CreateTodoButton = () => {
   // State of the Create To-Do modal
   const [opened, { open, close }] = useDisclosure(false);
+
+  const { mutate: callCreateTodo, isPending } = useCreateTodo();
 
   // Form for entering to-do details
   const form = useForm<CreateTodosFormData>({
@@ -68,10 +71,31 @@ const CreateTodoButton = () => {
   // This is called from form.onSubmit provided by the mantine framework, so it is safe to
   // assume all form values have passed validations within this function.
   const handleSubmit = (values: typeof form.values) => {
-    // TODO - add hook call here
-    console.log(values);
-    notifications.show({ message: "Not implemented!", color: "red" });
-    //notifications.show({title: "Success!", message: "To-Do successfully added", color: "green"});
+    // Call the mutation function from the custom hook to trigger
+    // the use-case for creating a to-do
+    callCreateTodo(
+      { ...values },
+      {
+        // If successful, show a notification and close the form
+        onSuccess: () => {
+          notifications.show({
+            title: "Success!",
+            message: "To-Do successfully added",
+            color: "green",
+          });
+
+          closeForm();
+        },
+
+        // If failed, show a notification and keep the form open
+        onError: (e) =>
+          notifications.show({
+            title: "Error",
+            message: e.message,
+            color: "red",
+          }),
+      }
+    );
 
     // Close the form
     closeForm();
@@ -122,7 +146,9 @@ const CreateTodoButton = () => {
               <Button variant="transparent" onClick={closeForm}>
                 Cancel
               </Button>
-              <Button type="submit">Confirm</Button>
+              <Button type="submit" loading={isPending}>
+                Confirm
+              </Button>
             </Group>
           </Stack>
         </form>

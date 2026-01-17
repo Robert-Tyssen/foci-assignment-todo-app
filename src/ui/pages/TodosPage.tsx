@@ -1,9 +1,18 @@
-import { Container, Switch, Table, Text, Title } from "@mantine/core";
+import {
+  Container,
+  Stack,
+  Switch,
+  Text,
+  Title
+} from "@mantine/core";
 import { useState } from "react";
 import CreateTodoButton from "../components/CreateTodoButton";
+import TodoListTile from "../components/TodoListTile";
+import { useTodoList } from "../hooks/useTodoList";
 
 const TodosPage = () => {
   const [showCompleted, setShowCompleted] = useState(true);
+  const { data: todos, error, isLoading } = useTodoList();
 
   return (
     <Container>
@@ -21,23 +30,15 @@ const TodosPage = () => {
         my="lg"
       />
 
-      <Table striped>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Title</Table.Th>
-            <Table.Th>Due Date</Table.Th>
-            <Table.Th>Completed?</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-
-        <Table.Tbody>
-          <Table.Tr>
-            <Table.Td>x</Table.Td>
-            <Table.Td></Table.Td>
-            <Table.Td></Table.Td>
-          </Table.Tr>
-        </Table.Tbody>
-      </Table>
+      {!isLoading && !error && todos && (
+        <>
+          <Stack>
+            {todos.map((t) => (
+              <TodoListTile t={t} />
+            ))}
+          </Stack>
+        </>
+      )}
     </Container>
   );
 };
