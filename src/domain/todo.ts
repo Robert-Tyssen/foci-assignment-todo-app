@@ -26,8 +26,16 @@ export const isOverdue = (t: Todo, now = new Date()): boolean => {
     return false;
   }
 
+  // Create copies to avoid mutating original values
+  const d1 = new Date(t.dueDate);
+  const d2 = new Date(now);
+
+  // Remove time component, so that we're only looking at the date
+  d1.setHours(0, 0, 0, 0);
+  d2.setHours(0, 0, 0, 0);
+
   // Otherwise compare due date against current time
-  return t.dueDate < now;
+  return d1 < d2;
 };
 
 /**
