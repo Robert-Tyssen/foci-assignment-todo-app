@@ -1,0 +1,8 @@
+.clickablePaper {
+  transition: backgroun-color 100ms easee;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--mantine-color-gray-0);
+  }
+}
