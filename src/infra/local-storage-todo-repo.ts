@@ -108,5 +108,27 @@ export const createLocalStorageRepo = (): TodoRepository => {
       // To-Do not found
       return null;
     },
+
+    /**
+     * Deletes the To-Do with the given id.
+     *
+     * @param id the unique id of the To-Do to be deleted.
+     * @returns true if the item was successfully deleted, or false if the id was not found.
+     */
+    delete: async (id: string) => {
+      // Load the list from storage, and find index with corresponding id
+      const list = load();
+      const idx = list.findIndex((val) => val.id === id);
+
+      // If item was found, remove it and save
+      if (idx >= 0) {
+        list.splice(idx, 1);
+        save(list);
+        return true;
+      }
+
+      // To-Do not found
+      return false;
+    },
   };
 };

@@ -11,6 +11,8 @@ import { IconTrash } from "@tabler/icons-react";
 import type { Todo } from "../../domain/todo";
 import DueDateBadge from "./DueDateBadge";
 
+import { notifications } from "@mantine/notifications";
+import { useDeleteTodo } from "../hooks/useDeleteTodo";
 import classes from "./ClickablePaper.module.css";
 
 interface TodoListTileProps {
@@ -19,9 +21,12 @@ interface TodoListTileProps {
 }
 
 const TodoListTile = ({ t, onClick }: TodoListTileProps) => {
+  const { mutate: deleteTodo, isPending: isDeleting } = useDeleteTodo();
+
   const handleContainerClicked = () => {
     onClick?.();
   };
+  
   const handleCheckboxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     console.log("Checkbox clicked");
@@ -29,7 +34,15 @@ const TodoListTile = ({ t, onClick }: TodoListTileProps) => {
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log("Delete clicked");
+    deleteTodo(t.id, {
+      onSuccess: () => {
+        notifications.show({
+          title: "Success!",
+          message: "To-Do was deleted successfully",
+          color: "green",
+        });
+      },
+    });
   };
 
   return (
@@ -59,6 +72,7 @@ const TodoListTile = ({ t, onClick }: TodoListTileProps) => {
             color="red"
             pt={4}
             onClick={handleDeleteClick}
+            loading={isDeleting}
           >
             <IconTrash style={{ width: "80%", height: "80%" }} />
           </ActionIcon>

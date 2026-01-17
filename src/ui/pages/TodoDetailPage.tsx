@@ -19,6 +19,8 @@ import {
 } from "@tabler/icons-react";
 import { getRouteApi, useNavigate } from "@tanstack/react-router";
 import type { Todo } from "../../domain/todo";
+import { deleteSuccessNotification } from "../components/notifications";
+import { useDeleteTodo } from "../hooks/useDeleteTodo";
 import { useTodo } from "../hooks/useTodo";
 
 // Get the routing API for the to-do detail page
@@ -39,6 +41,9 @@ const TodoDetailPage = () => {
 };
 
 const TodoEditView = ({ todo }: { todo: Todo }) => {
+  const { mutate: deleteTodo, isPending: isDeleting } = useDeleteTodo();
+  const navigate = useNavigate();
+
   const form = useForm({
     initialValues: {
       title: todo.title,
@@ -52,7 +57,14 @@ const TodoEditView = ({ todo }: { todo: Todo }) => {
     console.log(values);
   };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    deleteTodo(todo.id, {
+      onSuccess: () => {
+        navigate({ to: "/todos" });
+        deleteSuccessNotification();
+      },
+    });
+  };
 
   return (
     <Container mt="xl">
@@ -107,6 +119,7 @@ const TodoEditView = ({ todo }: { todo: Todo }) => {
             leftSection={<IconTrash />}
             variant="light"
             onClick={handleDelete}
+            loading={isDeleting}
           >
             Delete To-Do
           </Button>
