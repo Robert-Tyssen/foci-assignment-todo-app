@@ -1,5 +1,10 @@
 import type { Todo } from "../domain/todo";
 import type { TodoRepository } from "../domain/todo-repository";
+import {
+  dtoToEntity,
+  entityToDto,
+  type TodoStorageDto,
+} from "./local-storage-dto";
 
 // Storage key used for accessing local storage
 const STORAGE_KEY = "foci-todo-list-storage";
@@ -25,13 +30,15 @@ const STORAGE_KEY = "foci-todo-list-storage";
  */
 export const createLocalStorageRepo = (): TodoRepository => {
   // Helper function which loads to-do items from local storage
-  const load = (): Todo[] => {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  const load = (): TodoStorageDto[] => {
+    return JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    ) as TodoStorageDto[];
   };
 
   // Helper function to save to-do items to local storage
-  const save = (todos: Todo[]) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  const save = (dtos: TodoStorageDto[]) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(dtos));
   };
 
   return {
@@ -50,7 +57,7 @@ export const createLocalStorageRepo = (): TodoRepository => {
       }
 
       // Valid date - add it to the local storage
-      todos.push(todo);
+      todos.push(entityToDto(todo));
       save(todos);
       return todo;
     },
@@ -62,7 +69,8 @@ export const createLocalStorageRepo = (): TodoRepository => {
      * no items exist yet.
      */
     readTodoList: async () => {
-      return load();
+      const dtos = load();
+      return dtos.map((dto) => dtoToEntity(dto));
     },
 
     /**
@@ -79,7 +87,7 @@ export const createLocalStorageRepo = (): TodoRepository => {
 
       // Item was found - return it
       if (idx >= 0) {
-        return list[idx];
+        return dtoToEntity(list[idx]);
       }
 
       // No item was found with the given id
@@ -100,7 +108,7 @@ export const createLocalStorageRepo = (): TodoRepository => {
 
       // If item was found, update the list at the index and save
       if (idx >= 0) {
-        list[idx] = todo;
+        list[idx] = entityToDto(todo);
         save(list);
         return todo;
       }
