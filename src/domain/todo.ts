@@ -65,3 +65,7 @@ export const isDueToday = (t: Todo, today = new Date()): boolean => {
 
   return false;
 };
+
+// Validation thresholds for form inputs
+export const titleMaxLength = 200;
+export const descriptionMaxLength = 500;
