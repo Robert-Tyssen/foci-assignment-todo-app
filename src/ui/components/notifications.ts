@@ -31,7 +31,7 @@ export const updateSuccessNotification = () =>
 
 export const updateFailedNotification = (message?: string) =>
   notifications.show({
-    title: successDefaultTitle,
+    title: failedDefaultTitle,
     message: message || "Unexpected error occurred while updating the To-do",
     color: colorFailed,
   });
