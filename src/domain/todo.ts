@@ -1,3 +1,5 @@
+// TODO - add 'ignore completed' flags to date logic below
+
 /**
  * Model representing an item in a to-do list. A to-do is uniquely identified
  * by its `id`, and include additional fields to capture details such as title,
