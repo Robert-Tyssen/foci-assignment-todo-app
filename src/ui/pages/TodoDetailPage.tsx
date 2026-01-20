@@ -22,7 +22,11 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { getRouteApi, useNavigate } from "@tanstack/react-router";
-import type { Todo } from "../../domain/todo";
+import {
+  descriptionMaxLength,
+  titleMaxLength,
+  type Todo,
+} from "../../domain/todo";
 import {
   deleteFailedNotification,
   deleteSuccessNotification,
@@ -149,8 +153,9 @@ const TodoEditView = ({ todo }: { todo: Todo }) => {
             placeholder="Enter title for your To-Do"
             key={form.key("title")}
             flex={1}
-            {...form.getInputProps("title")}
+            maxLength={titleMaxLength}
             td={textDecoration}
+            {...form.getInputProps("title")}
           />
         </Group>
 
@@ -175,6 +180,7 @@ const TodoEditView = ({ todo }: { todo: Todo }) => {
             placeholder="(Optional) Add a description to your To-Do"
             rows={6}
             key={form.key("description")}
+            maxLength={descriptionMaxLength}
             {...form.getInputProps("description")}
           />
         </Group>

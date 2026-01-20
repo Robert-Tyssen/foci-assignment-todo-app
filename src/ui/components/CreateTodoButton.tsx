@@ -12,11 +12,7 @@ import { notifications } from "@mantine/notifications";
 import { IconPlus } from "@tabler/icons-react";
 import { useCreateTodo } from "../hooks/useCreateTodo";
 import { useTodoForm } from "../hooks/useTodoForm";
-
-// Form validation parameters
-// TODO - consider moving these to domain model
-const titleMaxLength = 200;
-const descriptionMaxLength = 500;
+import { descriptionMaxLength, titleMaxLength } from "../../domain/todo";
 
 /**
  * React component providing the interface for creating a new To-Do. Consists of a
