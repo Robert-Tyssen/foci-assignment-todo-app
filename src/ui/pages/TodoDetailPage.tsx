@@ -19,9 +19,14 @@ import {
 } from "@tabler/icons-react";
 import { getRouteApi, useNavigate } from "@tanstack/react-router";
 import type { Todo } from "../../domain/todo";
-import { deleteSuccessNotification } from "../components/notifications";
+import {
+  deleteSuccessNotification,
+  updateFailedNotification,
+  updateSuccessNotification,
+} from "../components/notifications";
 import { useDeleteTodo } from "../hooks/useDeleteTodo";
 import { useTodo } from "../hooks/useTodo";
+import { useUpdateTodo } from "../hooks/useUpdateTodo";
 
 // Get the routing API for the to-do detail page
 const routeApi = getRouteApi("/todos/$todoId");
@@ -41,7 +46,11 @@ const TodoDetailPage = () => {
 };
 
 const TodoEditView = ({ todo }: { todo: Todo }) => {
+  // Custom hooks for updating and deleting the todo
+  const { mutate: updateTodo, isPending: isUpdating } = useUpdateTodo();
   const { mutate: deleteTodo, isPending: isDeleting } = useDeleteTodo();
+
+  // Hook for navigation
   const navigate = useNavigate();
 
   const form = useForm({
@@ -53,8 +62,23 @@ const TodoEditView = ({ todo }: { todo: Todo }) => {
     },
   });
 
-  const handleSubmit = (values: typeof form.values) => {
-    console.log(values);
+  const handleUpdate = (values: typeof form.values) => {
+    const updated: Todo = {
+      ...todo,
+      title: values.title,
+      description: values.description,
+      dueDate: values.dueDate,
+      isCompleted: values.isCompleted,
+    };
+
+    updateTodo(updated, {
+      onSuccess: () => {
+        updateSuccessNotification();
+        navigate({ to: "/todos" });
+      },
+
+      onError: (e) => updateFailedNotification(e.message),
+    });
   };
 
   const handleDelete = () => {
@@ -65,11 +89,11 @@ const TodoEditView = ({ todo }: { todo: Todo }) => {
       },
     });
   };
-  
+
   return (
     <Container mt="xl">
       <BackButton />
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit(handleUpdate)}>
         <Group display="flex">
           <Checkbox
             size="md"
@@ -126,7 +150,9 @@ const TodoEditView = ({ todo }: { todo: Todo }) => {
           >
             Delete To-Do
           </Button>
-          <Button type="submit">Save Changes</Button>
+          <Button type="submit" loading={isUpdating}>
+            Save Changes
+          </Button>
         </Group>
       </form>
     </Container>

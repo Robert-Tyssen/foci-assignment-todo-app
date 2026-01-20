@@ -21,3 +21,17 @@ export const deleteFailedNotification = (message?: string) =>
     message: message || "Unexpected error occurred while deleting the To-do",
     color: colorFailed,
   });
+
+export const updateSuccessNotification = () =>
+  notifications.show({
+    title: successDefaultTitle,
+    message: "To-do was updated successfully",
+    color: colorSuccess,
+  });
+
+export const updateFailedNotification = (message?: string) =>
+  notifications.show({
+    title: successDefaultTitle,
+    message: message || "Unexpected error occurred while updating the To-do",
+    color: colorFailed,
+  });
