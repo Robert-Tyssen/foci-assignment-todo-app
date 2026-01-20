@@ -32,6 +32,12 @@ interface TodoListTileProps {
   onClick?: () => void;
 }
 
+/**
+ * Component which acts as a list tile displaying high-level details about a
+ * To-do, such as its title, due date and completion status. It contains interactivity,
+ * such as ability to click the tile (e.g. to navigate to its details), a checkbox for
+ * quickly updating incomplete -> complete or vise versa, or deleting the To-do.
+ */
 const TodoListTile = ({ t, onClick }: TodoListTileProps) => {
   // Custom hooks for updating and deleting the to-do
   const { mutate: updateTodo } = useUpdateTodo();
@@ -102,7 +108,10 @@ const TodoListTile = ({ t, onClick }: TodoListTileProps) => {
           </Text>
           <Group wrap="nowrap" mt="xs" gap="sm">
             <DueDateBadge todo={t} />
-            <Text size="xs" c="dimmed">{`Created ${t.createdAt}`}</Text>
+            <Text
+              size="xs"
+              c="dimmed"
+            >{`Created ${t.createdAt.toDateString()}`}</Text>
           </Group>
         </Box>
 

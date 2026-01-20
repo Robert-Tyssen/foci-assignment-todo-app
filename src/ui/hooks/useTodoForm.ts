@@ -4,6 +4,7 @@ import {
   titleMaxLength,
   type Todo,
 } from "../../domain/todo";
+import { toAbsoluteDate } from "../../utils/date-utils";
 
 /**
  * Custom wrapper for Mantine's `useForm` hook, which handles form initialization
@@ -27,7 +28,9 @@ export const useTodoForm = (todo?: Todo) => {
 
       // Use ISO string for date input, for compatibility with UI framework
       // Convert to a Date object prior to invoking use-case logic
-      dueDate: todo?.dueDate?.toISOString() || null,
+      dueDate: todo?.dueDate
+        ? toAbsoluteDate(todo.dueDate).toISOString().split("T")[0]
+        : null,
     },
 
     // Use mantine built-in form validators

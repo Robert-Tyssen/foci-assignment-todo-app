@@ -2,6 +2,13 @@ import { Badge, type MantineColor } from "@mantine/core";
 import { IconCalendarEvent } from "@tabler/icons-react";
 import { isDueToday, isOverdue, type Todo } from "../../domain/todo";
 
+/**
+ * Component which provides a 'badge' display for a To-do's due date. The badge
+ * displays the date itself, as well as color and style hints to add emphasis
+ * for To-do's which are past due, or due today.
+ *
+ * @param todo the To-do whose date is being displayed
+ */
 const DueDateBadge = ({ todo }: { todo: Todo }) => {
   // Get the variant to use for the badge
   // Use a filled badge for todos due today or overdue
@@ -21,7 +28,8 @@ const DueDateBadge = ({ todo }: { todo: Todo }) => {
   const getDueDateText = () => {
     if (!todo.dueDate) return "No Due Date";
     if (isDueToday(todo)) return "Today";
-    return todo.dueDate;
+
+    return todo.dueDate.toISOString().split("T")[0];
   };
 
   return (

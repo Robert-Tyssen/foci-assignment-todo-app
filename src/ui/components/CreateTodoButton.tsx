@@ -7,20 +7,11 @@ import {
   TextInput,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { hasLength, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconPlus } from "@tabler/icons-react";
 import { useCreateTodo } from "../hooks/useCreateTodo";
-
-/**
- * Form properties for to-do creation.
- */
-interface CreateTodosFormData {
-  title: string;
-  description: string;
-  dueDate: Date | null;
-}
+import { useTodoForm } from "../hooks/useTodoForm";
 
 // Form validation parameters
 // TODO - consider moving these to domain model
@@ -37,28 +28,9 @@ const CreateTodoButton = () => {
   // State of the Create To-Do modal
   const [opened, { open, close }] = useDisclosure(false);
 
+  // Hooks for To-do creation and form entry
   const { mutate: callCreateTodo, isPending } = useCreateTodo();
-
-  // Form for entering to-do details
-  const form = useForm<CreateTodosFormData>({
-    // Form is empty by default, with no due date specified
-    initialValues: { title: "", description: "", dueDate: null },
-
-    // Use mantine built-in form validators
-    validate: {
-      // Title must have at least 1 char, and not exceed max length
-      title: hasLength(
-        { min: 1, max: titleMaxLength },
-        `Title must be between 1-${titleMaxLength} characters`
-      ),
-
-      // Description cannot exceed max length
-      description: hasLength(
-        { max: descriptionMaxLength },
-        `Description cannot exceed ${descriptionMaxLength} characters.`
-      ),
-    },
-  });
+  const form = useTodoForm();
 
   // Helper function to close the modal and reset any form data which was entered
   const closeForm = () => {
@@ -71,10 +43,9 @@ const CreateTodoButton = () => {
   // This is called from form.onSubmit provided by the mantine framework, so it is safe to
   // assume all form values have passed validations within this function.
   const handleSubmit = (values: typeof form.values) => {
-    // Call the mutation function from the custom hook to trigger
-    // the use-case for creating a to-do
+    // Call the mutation function from the custom hook to trigger the use-case for creating a to-do
     callCreateTodo(
-      { ...values },
+      { ...values, dueDate: values.dueDate ? new Date(values.dueDate) : null },
       {
         // If successful, show a notification and close the form
         onSuccess: () => {
@@ -139,9 +110,6 @@ const CreateTodoButton = () => {
               clearable
               key={form.key("dueDate")}
               {...form.getInputProps("dueDate")}
-              onChange={(value) =>
-                form.setFieldValue("dueDate", value ? new Date(value) : null)
-              }
             />
 
             {/* Row for cancel and submit buttons */}
