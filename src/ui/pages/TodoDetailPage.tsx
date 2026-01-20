@@ -65,7 +65,7 @@ const TodoEditView = ({ todo }: { todo: Todo }) => {
       },
     });
   };
-
+  
   return (
     <Container mt="xl">
       <BackButton />
@@ -95,6 +95,9 @@ const TodoEditView = ({ todo }: { todo: Todo }) => {
             key={form.key("dueDate")}
             clearable
             {...form.getInputProps("dueDate")}
+            onChange={(value) =>
+              form.setFieldValue("dueDate", value ? new Date(value) : null)
+            }
           />
         </Group>
 

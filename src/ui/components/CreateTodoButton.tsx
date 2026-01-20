@@ -139,6 +139,9 @@ const CreateTodoButton = () => {
               clearable
               key={form.key("dueDate")}
               {...form.getInputProps("dueDate")}
+              onChange={(value) =>
+                form.setFieldValue("dueDate", value ? new Date(value) : null)
+              }
             />
 
             {/* Row for cancel and submit buttons */}
