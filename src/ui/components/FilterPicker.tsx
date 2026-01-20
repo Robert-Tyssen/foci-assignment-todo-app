@@ -38,7 +38,9 @@ const FilterPicker = ({ filter, onChange }: FilterPickerProps) => {
           onChange={(value) => handleTypeChange(value as FilterType)}
         >
           {filterItems.map((item) => (
-            <Chip value={item.value}>{item.label}</Chip>
+            <Chip key={`quick-filter-${item.value}`} value={item.value}>
+              {item.label}
+            </Chip>
           ))}
         </ChipGroup>
         <Chip
