@@ -56,7 +56,7 @@ const TodoListTile = ({ t, onClick }: TodoListTileProps) => {
       onClick={handleContainerClicked}
     >
       <Group align="start" justify="start" display="flex">
-        <Checkbox radius="xl" pt={4} onClick={handleCheckboxClick} />
+        <Checkbox radius="xl" pt={4} onClick={handleCheckboxClick}  />
 
         <Box flex={1}>
           <Text lineClamp={1}>{t.title}</Text>

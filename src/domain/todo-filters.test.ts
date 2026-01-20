@@ -53,7 +53,7 @@ describe("To-Do Quick Filtering Functionality", () => {
   afterEach(() => vi.useRealTimers());
 
   it("Retains all items when default filters are used", () => {
-    const filter: TodoQuickFilter = { type: undefined, showCompleted: true };
+    const filter: TodoQuickFilter = { type: "all", showCompleted: true };
     const retained = applyQuickFilter(mockList, filter);
 
     // Expect all to be retained
@@ -61,7 +61,7 @@ describe("To-Do Quick Filtering Functionality", () => {
   });
 
   it("Retains incomplete to-dos when show completed is false", () => {
-    const filter: TodoQuickFilter = { type: undefined, showCompleted: false };
+    const filter: TodoQuickFilter = { type: "all", showCompleted: false };
     const retained = applyQuickFilter(mockList, filter);
 
     // Expect original list unchanged

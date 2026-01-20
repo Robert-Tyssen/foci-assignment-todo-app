@@ -2,11 +2,11 @@ import { getLocalToday, toAbsoluteDate } from "../utils/date-utils";
 import type { Todo } from "./todo";
 
 export interface TodoQuickFilter {
-  type: FilterType | undefined;
+  type: FilterType;
   showCompleted: boolean;
 }
 
-export type FilterType = "overdue" | "today" | "upcoming";
+export type FilterType = "all" | "overdue" | "today" | "upcoming";
 
 type FilterPredicate = (t: Todo, now: Date) => boolean;
 
@@ -34,6 +34,9 @@ export const applyQuickFilter = (
 // within an Array<Todo[]>.filter statement, and return true for each to-do
 // which should be retained by the filter.
 const filterPredicate: Record<FilterType, FilterPredicate> = {
+  // Returns a predicate that is always true
+  all: () => true,
+
   // Returns a predicate that is true when the to-do has a due date
   // which is earlier than 'now'
   overdue: (t: Todo, now: Date) =>
