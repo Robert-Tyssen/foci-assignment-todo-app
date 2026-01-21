@@ -1,4 +1,4 @@
-// TODO - add 'ignore completed' flags to date logic below
+import { getLocalToday, toAbsoluteDate } from "../utils/date-utils";
 
 /**
  * Model representing an item in a to-do list. A to-do is uniquely identified
@@ -19,25 +19,24 @@ export interface Todo {
  * if it is incomplete, and has a due date in the past.
  *
  * @param t the Todo item being evaluated
- * @param now the value to use as the current time for evaluating due date
+ * @param today the value to use as the current time for evaluating due date
  * @returns true if the Todo is overdue
  */
-export const isOverdue = (t: Todo, now = new Date()): boolean => {
+export const isOverdue = (t: Todo, today = new Date()): boolean => {
   // Can't be overdue if already completed, or if no due date
   if (t.isCompleted || !t.dueDate) {
     return false;
   }
 
-  // Create copies to avoid mutating original values
-  const d1 = new Date(t.dueDate);
-  const d2 = new Date(now);
+  // Convert the UTC due date to an absolute date, at midnight
+  const due = toAbsoluteDate(t.dueDate);
 
-  // Remove time component, so that we're only looking at the date
-  d1.setHours(0, 0, 0, 0);
-  d2.setHours(0, 0, 0, 0);
+  // Make sure 'today' is oriented to midnight
+  const todayMidnight = new Date(today);
+  todayMidnight.setHours(0, 0, 0, 0);
 
   // Otherwise compare due date against current time
-  return d1 < d2;
+  return due < todayMidnight;
 };
 
 /**
@@ -48,22 +47,21 @@ export const isOverdue = (t: Todo, now = new Date()): boolean => {
  * @param today the value to use as 'today' for the comparison. Defaults to the current date.
  * @returns true if the Todo is due today.
  */
-export const isDueToday = (t: Todo, today = new Date()): boolean => {
-  // Can only be due today if not yet completed, and a due date is set
-  if (!t.isCompleted && t.dueDate) {
-    // Create copies to avoid mutating original values
-    const d1 = new Date(t.dueDate);
-    const d2 = new Date(today);
-
-    // Remove time component, so that we're only looking at the date
-    d1.setHours(0, 0, 0, 0);
-    d2.setHours(0, 0, 0, 0);
-
-    // Compare the timestamps - should be date-only comparison now
-    return d1.getTime() === d2.getTime();
+export const isDueToday = (t: Todo, today = getLocalToday()): boolean => {
+  // Can't be overdue if already completed, or if no due date
+  if (t.isCompleted || !t.dueDate) {
+    return false;
   }
 
-  return false;
+  // Convert the UTC due date to an absolute date, at midnight
+  const due = toAbsoluteDate(t.dueDate);
+
+  // Make sure 'today' is oriented to midnight
+  const todayMidnight = new Date(today);
+  todayMidnight.setHours(0, 0, 0, 0);
+
+  // Compare the timestamps - should be date-only comparison now
+  return due.getTime() === todayMidnight.getTime();
 };
 
 // Validation thresholds for form inputs
