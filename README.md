@@ -43,7 +43,66 @@ Additional packages were used to aid development:
 
 ## Getting Started
 
-TODO
+### Prerequisites
+
+- Node.js (v18+ recommended) - download [here](https://nodejs.org/en/download)
+- npm (packaged with Node.js)
+
+### Installation
+
+First clone the repository:
+
+```bash
+git clone https://github.com/Robert-Tyssen/foci-assignment-todo-app.git
+cd foci-assignment-todo-app
+```
+
+> **NOTE** - the rest of the guide assumes commands are being run from the project root (i.e. within `foci-assignment-todo-app` after cloning the repo)
+
+Once the repo is cloned, install dependencies:
+
+```bash
+npm install
+```
+
+### Run the app locally
+
+To run the app locally, run the following command in the terminal:
+
+```bash
+npm run dev
+```
+
+By default, the app will be available at http://localhost:5173/foci-assignment-todo-app/
+
+> NOTE - this app uses a base URL of `foci-assignment-todo-app` in the Vite configuration, this is for compatibility with GitHub Pages.
+
+### Testing
+
+This project uses Vitest and React Testing Library for unit and component tests. To run tests, run the following from the terminal:
+
+```bash
+npm run test
+```
+
+To generate a coverage report:
+```bash
+npm run test:cov
+```
+
+### Build
+
+To create a production-ready build, run the following command:
+```bash
+npm run build
+```
+
+This will generate a `dist/` directory in the project root directory which is ready for deployment. To preview the product build, run:
+```bash
+npm run preview
+```
+
+By default, the production preview will become available at http://localhost:4173/foci-assignment-todo-app/
 
 ## Technical Architecture
 
@@ -125,8 +184,35 @@ In addition to the primary _domain/_, _infra_/ and _ui/_ folders described above
 This application architecture is inspired heavily by _Clean Architecture_ - the below image provides a good viusualization:
 
 ![Clean Architecture Example](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
-Credit: https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
+
+Image Credit: https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 
 ## Future Improvements
 
-TODO
+There are a few improvements that could be added to further extend this application. They have been omitted from this project in the interest of time, but here are a few ideas, and high-level discussion on how they might be implemented:
+
+**1. To-Do Sorting**
+
+The app has some simple filtering logic, but does not have any sorting functionality currently. To build this, the suggested approach would be to create a new domain model `TodoSortOption` which contains the field to be sorted by, and an ascending / descending indicator. Based on this model, Array.sort() functions could be built to sort `Todo` objects accordingly. Next, a component would be added to the Todo list page to control the selected sort options, in a similar fashion to the existing `FilterPicker`.
+
+**2. Multi-tenancy**
+
+Currently, the app is for a single user. For a production application on the cloud, it would be necessary to have To-do's scoped only to the user who created it. To add this, we would extend the `Todo` model with a `userId` field, and would incorporate this into the `TodoRepository` function definitions.
+
+Practically, the app would then need to integrate with an Auth provider to manage user accounts, such as login and registration flows to ensure users are authenticated. All repository requests for To-do CRUD operations would be need to be made auth-aware, so requests can be scoped to the user performing the request. The backend would need to then perform authorization checks, to ensure users can only read or modify their own data.
+
+**3. Backend persistence**
+
+Currently, the application uses browser local storage for persistence of To-do information. This would quickly cause scalability problems as the number of To-do's increases, and is not stable storage (e.g. clearing browser data may delete a user's To-dos).
+
+To improve the design, we would implement a database system to store To-do's on the cloud. We would modify our `LocalStorageTodoRepository` to connect to the database (e.g. via Rest APIs) to handle CRUD operations.
+
+It is worth noting that moving the To-do's to the cloud may introduce extra latency in requests, so we may need to also review state management to ensure UX remains good during longer running operations (e.g. loading and error indicators, optimistic cache updates, etc.).
+
+# Thank you!
+
+Thank you for taking the time to review this project and README. I am happy to answer any additional questions, or provide a demonstration if necessary.
+
+Cheers,
+
+Robert Tyssen
