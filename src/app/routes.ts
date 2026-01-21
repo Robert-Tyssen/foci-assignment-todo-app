@@ -1,4 +1,5 @@
 import {
+  createHashHistory,
   createRootRoute,
   createRoute,
   createRouter,
@@ -45,7 +46,7 @@ const routeTree = rootRoute.addChildren([
   todoDetailRoute,
 ]);
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({ history: createHashHistory(), routeTree });
 
 // Add this so that any routing within the app logic is type-safe
 // (e.g. syntax error if route doesn't exist)
