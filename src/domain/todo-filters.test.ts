@@ -39,6 +39,11 @@ const mockList: Todo[] = [
     id: "id-upcoming",
     dueDate: new Date("2026-01-02T00:00:00Z"),
   },
+  {
+    ...todoTemplate,
+    id: "id-no-date",
+    dueDate: null,
+  },
 ];
 
 describe("To-Do Quick Filtering Functionality", () => {
@@ -57,7 +62,7 @@ describe("To-Do Quick Filtering Functionality", () => {
     const retained = applyQuickFilter(mockList, filter);
 
     // Expect all to be retained
-    expect(retained.length).toBe(5);
+    expect(retained.length).toBe(6);
   });
 
   it("Retains incomplete to-dos when show completed is false", () => {
@@ -65,10 +70,10 @@ describe("To-Do Quick Filtering Functionality", () => {
     const retained = applyQuickFilter(mockList, filter);
 
     // Expect original list unchanged
-    expect(mockList.length).toBe(5);
+    expect(mockList.length).toBe(6);
 
     // Expect one item to be removed
-    expect(retained.length).toBe(4);
+    expect(retained.length).toBe(5);
     expect(retained.findIndex((t) => t.id === "id-today")).toBe(0);
     expect(retained.findIndex((t) => t.id === "id-today-done")).toBe(-1);
   });
@@ -78,7 +83,7 @@ describe("To-Do Quick Filtering Functionality", () => {
     const retained = applyQuickFilter(mockList, filter);
 
     // Expect original list unchanged
-    expect(mockList.length).toBe(5);
+    expect(mockList.length).toBe(6);
 
     // Expect two items to remain
     expect(retained.length).toBe(2);
@@ -91,7 +96,7 @@ describe("To-Do Quick Filtering Functionality", () => {
     const retained = applyQuickFilter(mockList, filter);
 
     // Expect original list unchanged
-    expect(mockList.length).toBe(5);
+    expect(mockList.length).toBe(6);
 
     // Expect one item to be removed
     expect(retained.length).toBe(2);
@@ -104,7 +109,7 @@ describe("To-Do Quick Filtering Functionality", () => {
     const retained = applyQuickFilter(mockList, filter);
 
     // Expect original list unchanged
-    expect(mockList.length).toBe(5);
+    expect(mockList.length).toBe(6);
 
     // Expect one item to be removed
     expect(retained.length).toBe(1);

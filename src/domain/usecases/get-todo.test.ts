@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { Todo } from "../todo";
 import type { TodoRepository } from "../todo-repository";
 import { getTodoById } from "./get-todo";
+import { errorInvalidId, errorNotFound } from "../errors";
 
 const todoTemplate: Todo = {
   id: "", // Replaced in repo return value
@@ -43,14 +44,19 @@ describe("Get To-Do by IU Use Case", () => {
   it("Should return not found error when repo returns null", async () => {
     const repo = mockRepo as TodoRepository;
     await expect(getTodoById(repo, "id-not-found")).rejects.toThrowError(
-      "To-Do not found"
+      errorNotFound,
     );
   });
 
   it("Should pass through repo error when repo fails", async () => {
     const repo = mockRepo as TodoRepository;
     await expect(getTodoById(repo, "id-causes-failure")).rejects.toThrowError(
-      "unexpected error"
+      "unexpected error",
     );
+  });
+
+  it("Should return the correc error when id is empty", async () => {
+    const repo = mockRepo as TodoRepository;
+    await expect(getTodoById(repo, "")).rejects.toThrowError(errorInvalidId);
   });
 });

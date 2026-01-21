@@ -12,7 +12,7 @@ type FilterPredicate = (t: Todo, now: Date) => boolean;
 
 export const applyQuickFilter = (
   todos: Todo[],
-  filter: TodoQuickFilter
+  filter: TodoQuickFilter,
 ): Todo[] => {
   // Create a copy of the list for filtering
   let filteredTodos = [...todos];
@@ -24,9 +24,7 @@ export const applyQuickFilter = (
 
   const now = getLocalToday();
 
-  return filteredTodos.filter((t) =>
-    filter.type ? filterPredicate[filter.type](t, now) : true
-  );
+  return filteredTodos.filter((t) => filterPredicate[filter.type](t, now));
 };
 
 // Map containing filtering predicates which are used for filtering logic
