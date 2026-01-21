@@ -7,6 +7,9 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react()],
 
+  // Base name must match repo name for correct deployment to GitHub pages
+  base: "/foci-assignment-todo-app/",
+
   test: {
     globals: true,
     environment: "jsdom",
