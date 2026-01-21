@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 import TodosPage from "../ui/pages/TodosPage";
 import TodoDetailPage from "../ui/pages/TodoDetailPage";
+import NotFoundPage from "../ui/pages/NotFoundPage";
 
 // Root route which wraps all other routes
 const rootRoute = createRootRoute();
@@ -46,7 +47,11 @@ const routeTree = rootRoute.addChildren([
   todoDetailRoute,
 ]);
 
-export const router = createRouter({ history: createHashHistory(), routeTree });
+export const router = createRouter({
+  defaultNotFoundComponent: NotFoundPage,
+  history: createHashHistory(),
+  routeTree,
+});
 
 // Add this so that any routing within the app logic is type-safe
 // (e.g. syntax error if route doesn't exist)
