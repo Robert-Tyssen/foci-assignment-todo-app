@@ -1,15 +1,39 @@
 import { getLocalToday, toAbsoluteDate } from "../utils/date-utils";
 import type { Todo } from "./todo";
 
+/**
+ * Interface defining the 'quick filter' model for To-do object. It includes a `type`
+ * field to define the type of filtering, and a `showCompleted` flag, to indicate
+ * if already-completed To-do's should be returned by the filter.
+ */
 export interface TodoQuickFilter {
   type: FilterType;
   showCompleted: boolean;
 }
 
+/**
+ * Type of filter to be applied to the To-do list.
+ *   - all - retains the entire To-do list
+ *   - overdue - only displays To-do's with due dates in the past
+ *   - today - only displays To-do's due today
+ *   - upcoming - only displays To-do's with due dates in the future
+ */
 export type FilterType = "all" | "overdue" | "today" | "upcoming";
 
+/**
+ * Helper type which defines a predicate which can be applied to the various
+ * filter types in combination with Array.filter().
+ */
 type FilterPredicate = (t: Todo, now: Date) => boolean;
 
+/**
+ * This function applies a filter selection to an original list of To-do objects,
+ * and returns the resulting list.
+ *
+ * @param todos the original list of To-do's to be filtered
+ * @param filter the quick filter selection to be applied
+ * @returns a filtered list of To-do's based on the filter options
+ */
 export const applyQuickFilter = (
   todos: Todo[],
   filter: TodoQuickFilter,

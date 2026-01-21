@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { errorTitleEmpty } from "../errors";
 import type { Todo } from "../todo";
 import type { TodoRepository } from "../todo-repository";
 import { createTodo } from "./create-todo";
@@ -16,7 +17,7 @@ describe("Create To-Do Use Case", () => {
   it("Fails when title is empty", async () => {
     const repo = fakeRepo as TodoRepository;
     await expect(createTodo(repo, { title: " " })).rejects.toThrowError(
-      "Title cannot be empty"
+      errorTitleEmpty,
     );
   });
 
@@ -34,7 +35,7 @@ describe("Create To-Do Use Case", () => {
     const repo = fakeRepo as TodoRepository;
     const title = "failing-data";
     await expect(createTodo(repo, { title })).rejects.toThrowError(
-      "unexpected error"
+      "unexpected error",
     );
   });
 });

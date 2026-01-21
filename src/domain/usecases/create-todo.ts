@@ -1,3 +1,4 @@
+import { errorTitleEmpty } from "../errors";
 import type { Todo } from "../todo";
 import type { TodoRepository } from "../todo-repository";
 
@@ -11,9 +12,11 @@ interface CreateTodoParams {
 }
 
 /**
+ * Use case for creation of a To-do object. It performs a validation of the inputs,
+ * then invokes the create function from the repository input. If successful, the
+ * created To-do object is returned to the caller.
  *
  * @param repo the repository implementing persistence logic
- * @param param1
  * @returns
  */
 export const createTodo = async (
@@ -23,11 +26,11 @@ export const createTodo = async (
     description = "",
     dueDate = null,
     isCompleted = false,
-  }: CreateTodoParams
+  }: CreateTodoParams,
 ) => {
   // Validate that title is not empty
   if (!title.trim()) {
-    throw Error("Title cannot be empty");
+    throw Error(errorTitleEmpty);
   }
 
   // Build the to-do entity
