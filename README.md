@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# Foci To-Do App Assignment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+_A simple To-Do list app for the Foci interview process_
 
-Currently, two official plugins are available:
+[![codecov](https://codecov.io/gh/Robert-Tyssen/foci-assignment-todo-app/branch/main/graph/badge.svg)](https://codecov.io/gh/Robert-Tyssen/foci-assignment-todo-app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
 
-## React Compiler
+Thank you for taking a look at my repository! This repo contains a simple To-Do app developed for the [Foci Solutions](https://www.focisolutions.com/) interview process.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+For this assignment, I chose to build a web application for a To-Do app, using the browser's local storage for persistence. The goal of this repository is to highlight clean architecture patterns. Although this application is quite simple, these patterns are intended to scale easily to larger applications with more complex functionality. As a result, portions of the code, while straighforward to reason about, may seem over-engineered for the use case. See laters sections for rationale behind my technical design.
 
-## Expanding the ESLint configuration
+This README includes details on installing and deploying this repo locally; however, the finished product is also available on GitHub Pages:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+https://robert-tyssen.github.io/foci-assignment-todo-app/
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech Stack Used
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Development** - React + Typescript + Vite (see information [here](https://vite.dev/guide/))
+- **Testing** - [vitest](https://vitest.dev/)
+- **UI Library** - [Mantine v8](https://mantine.dev/)
+- **Hosting** - GitHub Pages
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+TypeScript was selected as the primary development language, as it provides type-safety to standard JavaScript development code. This helps create consistency across the application, ensuring that all variables, inputs and APIs are consumed as intended. Any typing errors are highlighted in the code editor, rather than causing unexpected bugs at runtime.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Additional packages were used to aid development:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**Key Packages Used**
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **@mantine/core** and **@mantine/hooks** - provide the core UI library, including preset styles and built-in components to reduce the amount of UI development needed.
+- **@mantine/dates** - provides additional components for date inputs (e.g. used for selecting To-Do due dates)
+- **@mantine/form** - provides form entry functionality, such as input validation and submission
+- **@mantine/notifications** - provides popup notifications, which are useful for feedback (e.g. success and failure messages)
+- **@tabler/icons-react** - provides several pre-made icons to provide better visual cues on the UI.
+- **@tanstack/react-query** - provides hooks to simplify state management when loading asynchronous data (e.g. loading and error handling, caching, cache keys, etc.)
+- **@tanstack/react-router** - provides type-safe routing
+
+## Installation and Usage
+
+TODO
+
+## Technical Architecture
+
+TODO
+
+## Future Improvements
+
+TODO
